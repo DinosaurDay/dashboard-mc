@@ -1,0 +1,21 @@
+/* .serv-status-container {
+    display: flex;
+} */
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width : 15svw;
+    height: 20svh;
+    background-color: gray;
+}
+
+.serv-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
