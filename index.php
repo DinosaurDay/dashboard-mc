@@ -11,7 +11,7 @@
         return $serveur_etat;
     }
 
-    $url = $_GET["https://api.mcsrvstat.us/3/92.92.116.88"];
+    // $url = $_GET["https://api.mcsrvstat.us/3/92.92.116.88"];
 
     if (isset($_GET['api_url'])) {
         $api_url = $_GET['api_url'];
@@ -20,6 +20,7 @@
         if (filter_var($api_url, FILTER_VALIDATE_URL)) {
             // Faire la requête à l'API
             $response = file_get_contents($api_url);
+            $json_response = json_decode($response, true);
     
             if ($response === FALSE) {
                 echo "Erreur lors de la requête à l'API.";
@@ -50,11 +51,12 @@
     <h1>Ouga bouga</h1>
     <div class="serv-status-container card">
         <h2>Server status</h2>
-        <div class="serv-status">
+        <!-- <div class="serv-status"> -->
             <?php echo checkServerState('92.92.116.88', '25565');
-            echo $response;?>
-        </div>
+            print_r($json_response['ip']);?>
+        <!-- </div> -->
     </div>
+    <a href="index.php?api_url=https://api.mcsrvstat.us/3/92.92.116.88">Vers l'API</a>
 </body>
 
 </html>
