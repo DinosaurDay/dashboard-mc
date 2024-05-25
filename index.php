@@ -1,40 +1,45 @@
 <?php
-    function checkServerState($serverIp, $serverPort = '25565') {
-        $fp = @fsockopen($serverIp, $serverPort, $errno, $errstr, 1);
+function checkServerState($serverIp, $serverPort) {
+    $fp = @fsockopen($serverIp, $serverPort, $errno, $errstr, 1);
 
-        if ($fp >= 1) {
-            $serveur_etat = '<img src="assets/png/enabled.png" width="16" height="16" border="0" style="vertical-align: middle;" /> <p>Online</p>';
-        } else {
-            $serveur_etat = '<img src="assets/png/disabled.png" width="16" height="16" border="0" style="vertical-align: middle;" /> <p>Offline</p>';
-        }
-
-        return $serveur_etat;
+    if ($fp >= 1) {
+        $serveur_etat = '<img src="assets/png/enabled.png" width="16" height="16" border="0" style="vertical-align: middle;"/> <p>Online</p>';
+    } else {
+        $serveur_etat = '<img src="assets/png/disabled.png" width="16" height="16" border="0" style="vertical-align: middle;"/> <p>Offline</p>';
     }
 
-    // $url = $_GET["https://api.mcsrvstat.us/3/92.92.116.88"];
+    return $serveur_etat;
+}
 
-    if (isset($_GET['api_url'])) {
-        $api_url = $_GET['api_url'];
-    
+function getApiFResponse($api_url) {
+    $response = file_get_contents($api_url);
+    $json_response = json_decode($response, true);
+
+    if (!$response) {
+        return false;
+    }
+    echo $response;
+    return $json_response;
+}
+
+function testApiUrl($api_url) : string|false {
+    if ($api_url) {
         // Vérifier si l'URL est correcte et sûre
         if (filter_var($api_url, FILTER_VALIDATE_URL)) {
-            // Faire la requête à l'API
-            $response = file_get_contents($api_url);
-            $json_response = json_decode($response, true);
-    
-            if ($response === FALSE) {
-                echo "Erreur lors de la requête à l'API.";
-            } else {
-                // Afficher la réponse de l'API
-                echo $response;
-            }
+            return $api_url;
         } else {
-            echo "URL invalide.";
+            return false;
         }
     } else {
-        echo "Le paramètre 'api_url' est manquant.";
+        return false;
     }
-    
+}
+
+//Assignation valeur de retour fonction dans var $api_url puis test de la var avec if
+if ($api_url = testApiUrl($_GET['api_url'])) {
+    $json_data = getApiFResponse($api_url);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -52,8 +57,12 @@
     <div class="serv-status-container card">
         <h2>Server status</h2>
         <!-- <div class="serv-status"> -->
-            <?php echo checkServerState('92.92.116.88', '25565');
-            print_r($json_response['ip']);?>
+        <?php
+            echo checkServerState('92.92.116.88', '25565');
+            if ($json_data) {
+                echo ($json_data['ip']);
+            }
+        ?>
         <!-- </div> -->
     </div>
     <a href="index.php?api_url=https://api.mcsrvstat.us/3/92.92.116.88">Vers l'API</a>
