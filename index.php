@@ -1,7 +1,8 @@
 <?php
+
+//Utilisation socket rsx pour récupérer les infos indispensables comme l'état du serv sans aucun délai
 function checkServerState($serverIp, $serverPort) {
     $fp = @fsockopen($serverIp, $serverPort, $errno, $errstr, 1);
-
     if ($fp >= 1) {
         $serveur_etat = '<img src="assets/png/enabled.png" width="16" height="16" border="0" style="vertical-align: middle;"/> <p>Online</p>';
     } else {
@@ -54,6 +55,17 @@ if ($api_url = testApiUrl($_GET['api_url'])) {
 
 <body>
     <h1>Ouga bouga</h1>
+    <div class="serv-status-container card">
+        <h2>Server status</h2>
+        <!-- <div class="serv-status"> -->
+        <?php
+            echo checkServerState('92.92.116.88', '25565');
+            if ($json_data) {
+                echo ($json_data['ip']);
+            }
+        ?>
+        <!-- </div> -->
+    </div>
     <div class="serv-status-container card">
         <h2>Server status</h2>
         <!-- <div class="serv-status"> -->
