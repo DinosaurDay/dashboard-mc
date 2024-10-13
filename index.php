@@ -67,12 +67,23 @@ if ($api_url = testApiUrl($_GET['api_url'])) {
         <!-- </div> -->
     </div>
     <div class="serv-status-container card">
-        <h2>Server status</h2>
+        <h2>Minecraft version</h2>
         <!-- <div class="serv-status"> -->
         <?php
-            echo checkServerState('92.92.116.88', '25565');
             if ($json_data) {
-                echo ($json_data['ip']);
+                echo ($json_data['version']);
+            }
+        ?>
+        <!-- </div> -->
+    </div>
+    <div class="serv-status-container card">
+        <h2>Online players</h2>
+        <!-- <div class="serv-status"> -->
+        <?php
+            if ($json_data) {
+                foreach ($json_data['players'] as $key => $value) {
+                    echo $value . '<br>';
+                };
             }
         ?>
         <!-- </div> -->
